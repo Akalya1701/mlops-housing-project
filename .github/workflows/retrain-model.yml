@@ -32,3 +32,9 @@ jobs:
       with:
         name: training-logs
         path: mlruns/
+
+    - name: Upload trained model
+      uses: actions/upload-artifact@v3
+      with:
+        name: trained-model
+        path: src/housing_model.pkl 

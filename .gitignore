@@ -1,0 +1,7 @@
+*.pkl
+*.joblib
+*.csv
+mlruns/
+__pycache__/
+artifacts/
+logs/

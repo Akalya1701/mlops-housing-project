@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: HousingPriceModel
+Version: 0.1
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: mlflow
+Requires-Dist: joblib

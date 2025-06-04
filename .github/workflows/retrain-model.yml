@@ -27,14 +27,14 @@ jobs:
     - name: Run training script
       run: python src/train.py
 
-    - name: Upload logs/artifacts (optional)
-      uses: actions/upload-artifact@v3
-      with:
-        name: training-logs
-        path: mlruns/
+    # - name: Upload logs/artifacts (optional)
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: training-logs
+    #     path: mlruns/
 
-    - name: Upload trained model
-      uses: actions/upload-artifact@v3
-      with:
-        name: trained-model
-        path: src/housing_model.pkl 
+    # - name: Upload trained model
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: trained-model
+    #     path: src/housing_model.pkl 

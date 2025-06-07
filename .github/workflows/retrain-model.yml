@@ -32,6 +32,29 @@ jobs:
     - name: Promote Model if RMSE is good
       run: python src/promote_model.py
 
+    - name: Send Email Notification
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "✅ Model Retrained & Promoted to Production"
+        to: ${{ secrets.EMAIL_TO }}
+        from: ${{ secrets.EMAIL_USERNAME }}
+        body: |
+          Hello Akalya,
+
+          Your model has been retrained and successfully promoted to the Production stage in MLflow.
+
+          🎯 Keep up the great work!
+
+          - Your GitHub Actions Workflow 💻
+
+
+      
+
 
     # - name: Upload logs/artifacts (optional)
     #   uses: actions/upload-artifact@v3

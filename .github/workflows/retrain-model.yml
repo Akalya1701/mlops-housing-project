@@ -29,8 +29,13 @@ jobs:
 
     - name: Run training script
       run: python src/train.py
+    - name: Run Tests
+      run: |
+        pip install pytest
+        pytest test/
     - name: Promote Model if RMSE is good
       run: python src/promote_model.py
+
 
 # email notification
     - name: Send Email Notification

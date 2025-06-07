@@ -32,6 +32,7 @@ jobs:
     - name: Promote Model if RMSE is good
       run: python src/promote_model.py
 
+# email notification
     - name: Send Email Notification
       uses: dawidd6/action-send-mail@v3
       with:

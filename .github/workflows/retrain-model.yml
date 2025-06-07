@@ -5,6 +5,9 @@ on:
     branches:
       - master # or your default branch name
 
+  # schedule:
+    # - cron: '0 3 * * 1'  # every Monday at 3am UTC
+    #  Use crontab.guru to customize timings.
 jobs:
   retrain:
     runs-on: ubuntu-latest
@@ -26,6 +29,9 @@ jobs:
 
     - name: Run training script
       run: python src/train.py
+    - name: Promote Model if RMSE is good
+      run: python promote_model.py
+
 
     # - name: Upload logs/artifacts (optional)
     #   uses: actions/upload-artifact@v3

@@ -3,5 +3,7 @@ mlflow
 joblib
 pandas
 fairlearn>=0.10.0
+matplotlib
+
 
 

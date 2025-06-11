@@ -8,6 +8,7 @@ import mlflow.sklearn
 import joblib
 import os
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # 📥 Load dataset
 data = fetch_california_housing(as_frame=True)
@@ -60,6 +61,14 @@ print(metric_frame.by_group)
 
 print("\n📉 Performance disparity (MAE difference between groups):")
 print(metric_frame.difference())
+
+# plot
+
+metric_frame.by_group.plot(kind="bar")
+plt.title("MAE by Income Group")
+plt.ylabel("Mean Absolute Error")
+plt.show()
+
 
 # 🚀 Log to MLflow
 with mlflow.start_run() as run:

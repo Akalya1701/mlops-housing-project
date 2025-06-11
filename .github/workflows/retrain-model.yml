@@ -29,6 +29,8 @@ jobs:
 
     - name: Run training script
       run: python src/train.py
+    - name: Register model to MLflow
+      run: python src/register_model.py
     - name: Run Tests
       run: |
         pip install pytest

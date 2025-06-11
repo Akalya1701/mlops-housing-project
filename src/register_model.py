@@ -3,7 +3,7 @@
 import mlflow
 from mlflow.tracking import MlflowClient
 
-run_id = "a05f0909bfa04fc2b8fc40b691be8254"  # use your actual run_id after logging
+run_id = "93c1874bec0d48508927f2b5e8221f5e"  # use your actual run_id after logging
 model_name = "HousingPriceModel"
 
 client = MlflowClient()
@@ -16,7 +16,7 @@ version = mv.version
 client.update_model_version(
     name=model_name,
     version=version,
-    description="RandomForest v2 trained on May-26-2025 data"
+    description="RandomForest v2 trained on june-06-2025 data"
 )
 
 # Transition version to "Staging"

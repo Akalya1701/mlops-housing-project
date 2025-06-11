@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.datasets import fetch_california_housing
 
-run_id = "a05f0909bfa04fc2b8fc40b691be8254"
+run_id = "93c1874bec0d48508927f2b5e8221f5e"
 model_name = "HousingPriceModel"
 
 def validate_model(model):

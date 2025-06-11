@@ -3,11 +3,10 @@ name: Retrain Model
 on:
   push:
     branches:
-      - master # or your default branch name
-
+      - master  # your default branch
   # schedule:
-    # - cron: '0 3 * * 1'  # every Monday at 3am UTC
-    #  Use crontab.guru to customize timings.
+  #   - cron: '0 3 * * 1'  # every Monday at 3am UTC
+
 jobs:
   retrain:
     runs-on: ubuntu-latest
@@ -19,27 +18,38 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'  # use your version
+        python-version: '3.8'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install mlflow scikit-learn joblib  # just in case
+        pip install mlflow scikit-learn joblib fairlearn pytest
 
     - name: Run training script
       run: python src/train.py
+
+    - name: Save run_id.txt as artifact
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: run-id
+        path: run_id.txt
+
+    - name: Download run_id.txt
+      uses: actions/download-artifact@v3
+      with:
+        name: run-id
+
     - name: Register model to MLflow
       run: python src/register_model.py
+
     - name: Run Tests
-      run: |
-        pip install pytest
-        pytest test/
+      run: pytest test/
+
     - name: Promote Model if RMSE is good
       run: python src/promote_model.py
 
-
-# email notification
     - name: Send Email Notification
       uses: dawidd6/action-send-mail@v3
       with:
@@ -60,18 +70,9 @@ jobs:
 
           - Your GitHub Actions Workflow 💻
 
-
-      
-
-
-    # - name: Upload logs/artifacts (optional)
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: training-logs
-    #     path: mlruns/
-
-    # - name: Upload trained model
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: trained-model
-    #     path: src/housing_model.pkl 
+    # Optional: upload trained model if needed
+    - name: Upload trained model
+      uses: actions/upload-artifact@v3
+      with:
+        name: trained-model
+        path: src/housing_model.pkl

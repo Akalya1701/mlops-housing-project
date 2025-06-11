@@ -31,13 +31,13 @@ jobs:
 
     - name: Save run_id.txt as artifact
       if: success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # ✅ Updated to v4
       with:
         name: run-id
         path: run_id.txt
 
     - name: Download run_id.txt
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4  # ✅ Updated to v4
       with:
         name: run-id
 
@@ -70,9 +70,8 @@ jobs:
 
           - Your GitHub Actions Workflow 💻
 
-    # Optional: upload trained model if needed
     - name: Upload trained model
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # ✅ Updated to v4
       with:
         name: trained-model
         path: src/housing_model.pkl

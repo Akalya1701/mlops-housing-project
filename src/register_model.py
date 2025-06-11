@@ -1,33 +1,44 @@
-# in this file we are going to register our model in mlflow registry to explore more about staging,tags and versions
-
 import mlflow
 from mlflow.tracking import MlflowClient
+import os
 
-run_id = "93c1874bec0d48508927f2b5e8221f5e"  # use your actual run_id after logging
+# 🔁 Load run_id dynamically from file (produced by train.py)
+run_id_path = "run_id.txt"
+if not os.path.exists(run_id_path):
+    raise FileNotFoundError("❌ 'run_id.txt' not found. Ensure train.py ran successfully and logged the run ID.")
+
+with open(run_id_path, "r") as f:
+    run_id = f.read().strip()
+
 model_name = "HousingPriceModel"
+artifact_path = "housingmodel"
 
 client = MlflowClient()
 
-# Register model from the run's artifact path "model"
-mv = mlflow.register_model(f"runs:/{run_id}/housingmodel", model_name)
+# 🏷️ Register model (creates new version if already exists)
+print(f"📦 Registering model from run ID: {run_id}")
+model_uri = f"runs:/{run_id}/{artifact_path}"
+mv = mlflow.register_model(model_uri, model_name)
 version = mv.version
 
-# Update version description (optional)
+# 📝 Update version description
 client.update_model_version(
     name=model_name,
     version=version,
-    description="RandomForest v2 trained on june-06-2025 data"
+    description="RandomForest v2 trained on June 6, 2025"
 )
 
-# Transition version to "Staging"
+# 🚦 Move model to "Staging"
 client.transition_model_version_stage(
     name=model_name,
     version=version,
     stage="Staging"
 )
 
-print(f"Model {model_name} version {version} is now in Staging ✅")
+print(f"✅ Model '{model_name}' version {version} is now in 'Staging'")
 
-# Check latest versions in "Staging"
-model_versions = client.get_latest_versions(model_name, stages=["Staging"])
-print(model_versions)
+# 📄 List latest model versions in Staging
+staging_versions = client.get_latest_versions(model_name, stages=["Staging"])
+print("\n📚 Models in 'Staging':")
+for mv in staging_versions:
+    print(f"🔹 Version {mv.version} | Status: {mv.status} | Description: {mv.description}")

@@ -85,6 +85,7 @@ with mlflow.start_run() as run:
     mlflow.log_metric("mae_high_income", mae_high)
     mlflow.log_metric("mae_gap", mae_gap)
     mlflow.log_metric("mae_gap_fairlearn", metric_frame.difference())
+    mlflow.log_artifact("compliance_report.md")
 
     print(f"\n📝 MLflow Run ID: {run_id}")
 

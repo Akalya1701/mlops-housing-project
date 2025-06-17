@@ -6,6 +6,8 @@ fairlearn>=0.10.0
 matplotlib
 fastapi
 uvicorn
+streamlit
+evidently
 
 
 

@@ -1,35 +1,35 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, field_validator
+from typing import List
 import joblib
 import numpy as np
 
-# Load model
+# ✅ Load the model
 model = joblib.load("src/housing_model.pkl")
 
-# Define input schema
-class HousingData(BaseModel):
-    MedInc: float
-    HouseAge: float
-    AveRooms: float
-    AveBedrms: float
-    Population: float
-    AveOccup: float
-    Latitude: float
-    Longitude: float
+# ✅ Initialize FastAPI app
+app = FastAPI(title="Housing Price Prediction API")
 
-# Create FastAPI app
-app = FastAPI()
+# ✅ Define request schema using Pydantic
 
 @app.get("/")
-def home():
-    return {"message": "Welcome to Housing Price Prediction API!"}
+def read_root():
+    return {"message": "Hello World"}
+class HousingFeatures(BaseModel):
+    features: List[float]
 
+    @field_validator("features")
+    def validate_features_length(cls, v):
+        if len(v) != 8:
+            raise ValueError("Exactly 8 features are required")
+        return v
+
+# ✅ Define the POST endpoint
 @app.post("/predict")
-def predict(data: HousingData):
-    input_data = np.array([[ 
-        data.MedInc, data.HouseAge, data.AveRooms, data.AveBedrms,
-        data.Population, data.AveOccup, data.Latitude, data.Longitude
-    ]])
-    prediction = model.predict(input_data)
-    return {"prediction": prediction[0]}
-
+def predict(data: HousingFeatures):
+    try:
+        input_array = np.array(data.features).reshape(1, -1)
+        prediction = model.predict(input_array)[0]
+        return {"prediction": prediction}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
